@@ -6,7 +6,7 @@ export function observe(callback) {
   return callback();
 }
 
-function observable(obj) {
+export function observable(obj) {
 
     let result = new Proxy(obj,{
 
