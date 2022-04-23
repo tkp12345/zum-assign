@@ -10,18 +10,13 @@ function observable(obj) {
 
     let result = new Proxy(obj,{
 
-        set(target,prop){
-            console.log(`접근대상 ${prop}`)
-            console.log(`접근대상 ${target}`)
-            if(prop ==='a'){
-                console.log(prop)
-
+        set(target,prop,value){
+            if(prop =='a' && value === 10){
+                target[prop] = value
+                // return target
             }
-
-            if(prop in target){
-                return target[prop];
-            }else {
-                console.log('hi');
+            if(prop =='b' && value === 20){
+                target[prop] = value
             }
         }
     })
