@@ -13,10 +13,11 @@ export function observable(obj) {
         set(target,prop,value){
             if(prop =='a' && value === 10){
                 target[prop] = value
-                return result            }
+                return true
+            }
             if(prop =='b' && value === 20){
                 target[prop] = value
-                return result
+                return true
             }
         }
     })
