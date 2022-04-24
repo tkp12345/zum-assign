@@ -13,10 +13,19 @@
  **************************************************************************/
 
 
-
-//3
-//oberve 와 observable 에서 상태를 감지해야하기 떄문에 전역으로
+//oberve 와 observable 에서 전역으로 상태를 감지해야하기 떄문에 할당
 let callbackState ;
+//이전 할당값 저장 객체
+let prevValue={};
+
+//상태변경 감지  check 함수
+function sameValCheck(prevValue,target , prop, value){
+    if(Object.keys(prevValue).length){
+        if(prevValue[prop] === value)
+            return true;
+    }
+    return false;
+}
 
 export function observe(callback) {
     //매개변수로 받은 callback 을 참조
@@ -28,7 +37,7 @@ export function observe(callback) {
 }
 
 export function observable(obj) {
-    //2
+
     let callbackDetect={}
 
     const result = new Proxy(obj,{
@@ -43,19 +52,24 @@ export function observable(obj) {
         }
         },
         set(target,prop,value,receiver){
+            if( !sameValCheck(prevValue,target , prop, value)){
             if(prop && value) {
                 if (prop == 'a' && value === 10) {
                     target[prop] = value
+                    prevValue[prop]=value
                     callbackDetect[prop].forEach(callback => callback())
                     return true
                 }
                 if (prop == 'b' && value === 20) {
                     target[prop] = value
+                    prevValue[prop]=value
                     callbackDetect[prop].forEach(callback => callback())
                     return true
-
                 }
             }
+
+            }
+            return true
         }
     })
     return result;
